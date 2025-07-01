@@ -1,6 +1,7 @@
+import { TableData } from "../../../components/TableData"
 const Statistics = () => {
     return (
-        <div>employees</div>
+        <TableData />
     )
 }
 
