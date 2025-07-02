@@ -10,7 +10,7 @@ import SidebarIcons from "./SidebarIcon";
 const navLinkData = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Nhân viên", href: "/employees", icon: Users },
-  { name: "Lịch sử chấm công NV", href: "/history_staff", icon: Clock },
+  { name: "Chấm công NV", href: "/history_staff", icon: Clock },
   { name: "Lịch sử chấm công", href: "/history_time", icon: History },
   { name: "Quản lý phân quyền", href: "/permissions", icon: ShieldCheck },
   { name: "Thống kê", href: "/statistics", icon: BarChart },
@@ -23,7 +23,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="w-64 text-white h-full relative"
+      className=" text-white h-full relative"
       style={{ backgroundColor: "rgb(161, 29, 33)" }}
     >
       <div className="w-full p-4">

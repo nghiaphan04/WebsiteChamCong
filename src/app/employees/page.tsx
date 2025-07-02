@@ -64,7 +64,7 @@ const dummyData = [
 export default function Home() {
   return (
     <div className="flex">
-      <div className="flex-1 h-[calc(100vh-200px)] p-2 overflow-y-scroll scrollbar-hidden">
+      <div className="flex-1  p-2 ">
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {dummyData.map((emp, i) => (
             <EmployeeCard key={i} {...emp} />
