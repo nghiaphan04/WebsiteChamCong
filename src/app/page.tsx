@@ -11,6 +11,10 @@ import {
   Legend,
 } from 'chart.js';
 import CountUp from 'react-countup';
+import { ScriptableContext } from 'chart.js';
+
+
+
 
 ChartJS.register(
   BarElement,
@@ -44,7 +48,7 @@ export default function DashboardPage() {
       {
         label: 'Revenue',
         data: revenueValues,
-        backgroundColor: (ctx: any) => {
+        backgroundColor: (ctx: ScriptableContext<'bar'>) => {
           const index = ctx.dataIndex;
           return index === currentMonthIndex ? '#dc2626' : '#e5e7eb';
         },
