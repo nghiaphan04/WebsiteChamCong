@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -9,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import CountUp from 'react-countup';
 
 ChartJS.register(
   BarElement,
@@ -20,15 +22,31 @@ ChartJS.register(
 );
 
 export default function DashboardPage() {
+  const monthLabels = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  const revenueValues = [
+    5000, 7500, 8000, 9500, 12000, 10500,
+    15000, 13000, 12500, 11000, 10800, 9200
+  ];
+
+  const [currentMonthIndex, setCurrentMonthIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentMonthIndex(new Date().getMonth());
+  }, []);
+
   const revenueData = {
-    labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
+    labels: monthLabels,
     datasets: [
       {
         label: 'Revenue',
-        data: [8000, 9500, 12000, 15000, 11000, 10500, 13000, 12500, 11000],
+        data: revenueValues,
         backgroundColor: (ctx: any) => {
           const index = ctx.dataIndex;
-          return index === 3 ? '#dc2626' : '#e5e7eb'; 
+          return index === currentMonthIndex ? '#dc2626' : '#e5e7eb';
         },
         borderRadius: 8,
         barThickness: 24,
@@ -42,51 +60,86 @@ export default function DashboardPage() {
       {
         label: 'Revenue %',
         data: [40, 35, 25],
-        backgroundColor: ['#ef4444', '#f97316', '#eab308'], 
+        backgroundColor: ['#ef4444', '#f97316', '#eab308'],
         borderWidth: 1,
       },
     ],
   };
 
+  const stats = [
+    { title: 'Total Revenue', value: '$216k', color: 'red', change: '↑ 8%' },
+    { title: 'Invoices', value: '2,221', color: 'green', change: '↓ 2%' },
+    { title: 'Clients', value: '1,423', color: 'red', change: '↑ 3%' },
+    { title: 'Loyalty', value: '78%', color: 'pink', change: '↑ 1%' },
+  ];
+
+  const parseStatValue = (val: string) => {
+    const isDollar = val.startsWith('$');
+    const isPercent = val.endsWith('%');
+    const isK = val.toLowerCase().includes('k');
+    const num = parseFloat(val.replace(/[^0-9.]/g, ''));
+
+    return {
+      end: isK ? num * 1000 : num,
+      prefix: isDollar ? '$' : '',
+      suffix: isPercent ? '%' : '',
+      displaySuffix: isK ? 'k' : '',
+    };
+  };
+
   return (
     <div className="flex text-gray-800">
-      
       <main className="flex-1 space-y-6 max-w-[1440px] mx-auto">
-
+        {/* Stats */}
         <div className="grid grid-cols-4 gap-6">
-          {[
-            { title: 'Total Revenue', value: '$216k', color: 'red', change: '↑ 8%' },
-            { title: 'Invoices', value: '2,221', color: 'green', change: '↓ 2%' },
-            { title: 'Clients', value: '1,423', color: 'red', change: '↑ 3%' },
-            { title: 'Loyalty', value: '78%', color: 'pink', change: '↑ 1%' },
-          ].map((stat, i) => (
-            <div key={i} className="bg-white p-4 rounded-lg shadow space-y-1">
-              <div className={`text-sm font-medium text-${stat.color}-600`}>
-                {stat.title}
+          {stats.map((stat, i) => {
+            const { end, prefix, suffix, displaySuffix } = parseStatValue(stat.value);
+            return (
+              <div key={i} className="bg-white p-4 rounded-lg shadow space-y-1">
+                <div className={`text-sm font-medium text-${stat.color}-600`}>
+                  {stat.title}
+                </div>
+                <div className="text-xl font-bold">
+                  <CountUp
+                    end={end}
+                    duration={1.5}
+                    separator=","
+                    prefix={prefix}
+                    suffix={suffix}
+                  />
+                  {displaySuffix}
+                </div>
+                <div className="text-xs text-gray-500">{stat.change}</div>
               </div>
-              <div className="text-xl font-bold">{stat.value}</div>
-              <div className="text-xs text-gray-500">{stat.change}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
+        {/* Chart + Promo + Pie */}
         <div className="grid grid-cols-4 gap-6">
-
+          {/* Bar Chart */}
           <div className="col-span-2 bg-white p-6 rounded-lg shadow">
             <div className="flex justify-between items-center mb-4">
               <div className="text-sm text-gray-500">Monthly Revenue</div>
-              <div className="text-xl font-bold">$15,000</div>
+              <div className="text-xl font-bold">
+                {currentMonthIndex !== null
+                  ? `$${revenueValues[currentMonthIndex].toLocaleString()}`
+                  : '--'}
+              </div>
             </div>
             <Bar
               data={revenueData}
               options={{
                 plugins: { legend: { display: false } },
-                scales: { y: { display: false }, x: { grid: { display: false } } },
+                scales: {
+                  y: { display: false },
+                  x: { grid: { display: false } }
+                },
               }}
             />
           </div>
 
-          {/* Promo */}
+          {/* Promo Card */}
           <div className="bg-gradient-to-br from-red-600 to-red-800 text-white p-6 rounded-lg shadow flex flex-col justify-between">
             <div>
               <div className="bg-white text-red-600 w-fit px-3 py-1 rounded-full text-xs mb-3">NEW</div>
@@ -118,7 +171,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Recent Invoices */}
+          {/* Invoices Table */}
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="font-semibold text-lg mb-4">Recent Invoices</h3>
             <table className="w-full text-sm">
