@@ -34,7 +34,7 @@ export default function RootLayout({
             <Sidebar />
           </aside>
           
-          <div className="ml-64 flex-1 p-6">
+          <div className="ml-64 flex-1 p-6  ">
             <Header />
               {children}
           </div>

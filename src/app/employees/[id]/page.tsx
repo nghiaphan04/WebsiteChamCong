@@ -1,7 +1,7 @@
 
 import Image from "next/image";
 
-export default function Dashboard() {
+export default function EmployeeDetail() {
   return (
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

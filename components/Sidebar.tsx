@@ -9,9 +9,10 @@ import SidebarIcons from "./SidebarIcon";
 
 const navLinkData = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Nhân viên", href: "/employees", icon: Users },
+
   { name: "Chấm công NV", href: "/history_staff", icon: Clock },
   { name: "Lịch sử chấm công", href: "/history_time", icon: History },
+   { name: "Nhân viên", href: "/employees", icon: Users },
   { name: "Quản lý phân quyền", href: "/permissions", icon: ShieldCheck },
   { name: "Thống kê", href: "/statistics", icon: BarChart },
 ];
