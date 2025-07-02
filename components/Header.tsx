@@ -6,6 +6,7 @@ import { UserPlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 
+
 export default function Header() {
   const tittle = [
     { name: "Dashboard", href: "/" },
@@ -17,9 +18,10 @@ export default function Header() {
   ];
 
   const pathname = usePathname();
+  const isEmployeeDetail = pathname.startsWith("/employees/");
 
   return (
-    <div className="mb-6 space-y-6">
+    <div className= {` ${isEmployeeDetail ? "mb-0" : "mb-6"} space-y-6`}>
      
       <div className="flex justify-between items-center">
         <div className="flex flex-[5] gap-6">
@@ -48,12 +50,13 @@ export default function Header() {
           <h2 className="text-4xl font-semibold mb-2">
             {tittle.find((item) => item.href === pathname)?.name}
           </h2>
-          <h3 className="text-gray-500">
-            Hi, Băng Băng. Welcome back to Admin!
-          </h3>
+          {!isEmployeeDetail && (
+              <h3 className="text-gray-500">
+              Hi, Băng Băng. Welcome back to Admin!
+            </h3>
+          )}
+          
         </div>
-        
-
         
       </div>
     </div>
