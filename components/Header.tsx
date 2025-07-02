@@ -10,7 +10,7 @@ export default function Header() {
   const tittle = [
     { name: "Dashboard", href: "/" },
     { name: "Nhân viên", href: "/employees" },
-    { name: "Lịch sử chấm công NV", href: "/history_staff" },
+    { name: "Chấm công NV", href: "/history_staff" },
     { name: "Lịch sử chấm công", href: "/history_time" },
     { name: "Quản lý phân quyền", href: "/permissions" },
     { name: "Thống kê", href: "/statistics" },
